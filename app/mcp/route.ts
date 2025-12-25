@@ -1,58 +1,26 @@
 import { z, ZodRawShape } from "zod";
 import { createMcpHandler } from "mcp-handler";
+import appMetadata from "./app-metadata.json";
 
-const diceSchema = { sides: z.number().int().min(2) } satisfies ZodRawShape;
-const weatherSchema = {
-  latitude: z.number(),
-  longitude: z.number(),
-  city: z.string(),
-} satisfies ZodRawShape;
-
-const APP_METADATA = {
-  name: "Mozo AI",
-  title: "Mozo AI",
-  subtitle: "AI-powered assistant for your business",
-  description:
-    "Mozo AI is an AI-powered assistant for your business. It helps you automate your business processes and improve your productivity.",
-  version: "1.0.0",
-  category: "AI Services",
-  location: "India",
-  websiteUrl: "https://mozo.ai",
-  privacyPolicyUrl: "https://mozo.ai/privacy-policy",
-  termsOfServiceUrl: "https://mozo.ai/terms-of-service",
-  images: [
-    {
-      src: "https://mozo.ai/images/screenshot-1.png",
-      alt: "Mozo Business",
-      type: "portrait",
-    },
-    {
-      src: "https://mozo.ai/images/screenshot-2.png",
-      alt: "Mozo Customer",
-      type: "portrait",
-    },
-    {
-      src: "https://mozo.ai/images/screenshot-3.png",
-      alt: "Mozo Product",
-      type: "portrait",
-    },
-  ],
-  icons: [{ src: "https://mozo.ai/icon.png", mimeType: "image/png" }],
-};
+const APP_METADATA = appMetadata;
+const URI_METADATA = "file:///app-metadata.json";
 
 const handler = createMcpHandler(
   async (server) => {
+    // App metadata for the Qordinate.
     server.registerResource(
       "app-metadata",
-      "app://metadata",
+      URI_METADATA,
       {
+        title: "App metadata",
         description:
           "Application metadata including title, description, images, and legal links",
+        mimeType: "application/json",
       },
       async () => ({
         contents: [
           {
-            uri: "app://metadata",
+            uri: URI_METADATA,
             mimeType: "application/json",
             text: JSON.stringify(APP_METADATA, null, 2),
           },
@@ -65,7 +33,7 @@ const handler = createMcpHandler(
       {
         title: "Roll a dice",
         description: "Rolls an N-sided die",
-        inputSchema: diceSchema,
+        inputSchema: { sides: z.number().int().min(2) } satisfies ZodRawShape,
       },
       async ({ sides }: { sides: number }) => ({
         content: [
@@ -82,7 +50,11 @@ const handler = createMcpHandler(
       {
         title: "Get the current weather at a location",
         description: "Get the current weather at a location",
-        inputSchema: weatherSchema,
+        inputSchema: {
+          latitude: z.number(),
+          longitude: z.number(),
+          city: z.string(),
+        } satisfies ZodRawShape,
       },
       async ({
         latitude,
@@ -118,7 +90,7 @@ const handler = createMcpHandler(
       icons: APP_METADATA.icons,
     } as any,
     capabilities: {
-      tools: {
+      resources: {
         listChanged: true,
       },
     },
