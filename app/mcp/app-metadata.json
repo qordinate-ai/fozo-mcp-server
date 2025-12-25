@@ -11,17 +11,17 @@
   "termsOfServiceUrl": "https://mozo.ai/terms-of-service",
   "images": [
     {
-      "src": "https://mozo.ai/images/screenshot-1.png",
+      "src": "https://cdn.pixabay.com/photo/2018/08/04/20/48/woman-3584435_1280.jpg",
       "alt": "Mozo Business",
       "type": "portrait"
     },
     {
-      "src": "https://mozo.ai/images/screenshot-2.png",
+      "src": "https://cdn.pixabay.com/photo/2018/08/04/20/48/woman-3584435_1280.jpg",
       "alt": "Mozo Customer",
       "type": "portrait"
     },
     {
-      "src": "https://mozo.ai/images/screenshot-3.png",
+      "src": "https://cdn.pixabay.com/photo/2018/08/04/20/48/woman-3584435_1280.jpg",
       "alt": "Mozo Product",
       "type": "portrait"
     }
